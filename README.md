@@ -2,7 +2,7 @@
 
 ## Switch between environmental values in your .env file
 
-### Usage
+### Installation (optional)
 
 1. OPTIONAL. Install the package
 
@@ -14,7 +14,9 @@ npm i -g dotenv-switch
 yarn global add dotenv-switch
 ```
 
-2. Execute the command
+### Usage
+
+1. Execute the command
 
 ```bash
 dotenv-switch
@@ -25,6 +27,8 @@ dotenv-switch
 ```bash
 npx dotenv-switch
 ```
+
+After changing some variable, a new `.env.bak` file will be created. This file will be used to restore the original values if something happens.
 
 ### Contributing
 
