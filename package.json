@@ -17,6 +17,10 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moisesrj97/dotenv-switch"
+  },
   "bin": {
     "dotenv-switch": "dist/index.js"
   }
