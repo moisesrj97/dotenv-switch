@@ -3,6 +3,8 @@ import createEnvJson from './flows/createEnvJson.js';
 import inquirer from 'inquirer';
 import getEnvJSONFileParsed from './helpers/getEnvFileParsed.js';
 import getDotEnvFileParsed from './helpers/getDotEnvFileParsed.js';
+import addFieldToEnvJson from './flows/addFieldToEnvJson.js';
+import saveNewEnvFile from './helpers/saveNewEnvFile.js';
 
 (async () => {
   const envJsonExists = fs.existsSync('./env.json');
@@ -20,9 +22,10 @@ import getDotEnvFileParsed from './helpers/getDotEnvFileParsed.js';
     return;
   }
 
-  const parsedEnvFile = getDotEnvFileParsed();
-
-  const parsedEnvJson = getEnvJSONFileParsed();
+  const [parsedEnvFile, parsedEnvJson] = [
+    getDotEnvFileParsed(),
+    getEnvJSONFileParsed(),
+  ];
 
   const { variable } = await inquirer.prompt([
     {
@@ -36,24 +39,7 @@ import getDotEnvFileParsed from './helpers/getDotEnvFileParsed.js';
   const envJsonField = parsedEnvJson.find((item) => item.name === variable);
 
   if (!envJsonField) {
-    const { addVariable } = await inquirer.prompt([
-      {
-        type: 'confirm',
-        message: 'Variable not found in env.json. Do you want to add it?',
-        name: 'addVariable',
-        default: true,
-      },
-    ]);
-
-    if (addVariable) {
-      const newVariable = {
-        name: variable,
-        values: [parsedEnvFile.get(variable) as string],
-      };
-      parsedEnvJson.push(newVariable);
-      fs.writeFileSync('./env.json', JSON.stringify(parsedEnvJson, null, 2));
-    }
-
+    addFieldToEnvJson(variable, parsedEnvJson, parsedEnvFile);
     return;
   }
 
@@ -66,15 +52,5 @@ import getDotEnvFileParsed from './helpers/getDotEnvFileParsed.js';
     },
   ]);
 
-  fs.copyFileSync('./.env', './.env.bak');
-
-  const envFileWithNewValue = fs
-    .readFileSync('./.env', 'utf8')
-    .split('\n')
-    .map((line) =>
-      line.includes(`${variable}=`) ? `${variable}=${value}` : line
-    )
-    .join('\n');
-
-  fs.writeFileSync('./.env', envFileWithNewValue);
+  await saveNewEnvFile(variable, value);
 })();
