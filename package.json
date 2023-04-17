@@ -1,6 +1,6 @@
 {
   "name": "dotenv-switch",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CLI tool to quickly change between .env values",
   "main": "dist/index.js",
   "author": "moisesrj97",
