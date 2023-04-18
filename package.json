@@ -23,5 +23,14 @@
   },
   "bin": {
     "dotenv-switch": "dist/index.js"
-  }
+  },
+  "keywords": [
+    "env",
+    "toggle",
+    "dotenv",
+    "switch",
+    "change",
+    "cli",
+    "tool"
+  ]
 }
